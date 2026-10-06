@@ -81,15 +81,18 @@ builder.defineCatalogHandler(async (args) => {
             imdbRating: r.vote_average ? String(Number(r.vote_average).toFixed(1)) : undefined
           };
         });
-        // try resolve imdb for top hits
-        await Promise.all(metas.slice(0, 10).map(async (m) => {
-          try {
-            const tmdbId = m.id.split(':').pop();
-            const kind = type === 'series' ? 'tv' : 'movie';
-            const ext = await tmdbGet(`/${kind}/${tmdbId}/external_ids`, apiKey, {}, 7 * 24 * 3600 * 1000);
-            if (ext.imdb_id && ext.imdb_id.startsWith('tt')) m.id = ext.imdb_id;
-          } catch {}
-        }));
+        // try resolve imdb for top hits (bounded: TV hides slow catalogs)
+        await Promise.race([
+          Promise.all(metas.slice(0, 5).map(async (m) => {
+            try {
+              const tmdbId = m.id.split(':').pop();
+              const kind = type === 'series' ? 'tv' : 'movie';
+              const ext = await tmdbGet(`/${kind}/${tmdbId}/external_ids`, apiKey, {}, 7 * 24 * 3600 * 1000);
+              if (ext.imdb_id && ext.imdb_id.startsWith('tt')) m.id = ext.imdb_id;
+            } catch {}
+          })),
+          new Promise(r => setTimeout(r, 3500))
+        ]);
       } else {
         const spec = def.tmdb();
         const page = skip >= 20 ? Math.floor(skip / 20) + 1 : 1;
