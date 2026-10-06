@@ -4,6 +4,6 @@ services:
     env: node
     buildCommand: npm install
     startCommand: npm start
-    envVars:
-      - key: TMDB_READ_TOKEN
-        sync: false
+    # No API key needed at deploy time.
+    # Each user enters their own TMDB key on the addon's install page.
+    # Optionally set TMDB_READ_TOKEN here as a shared fallback.
