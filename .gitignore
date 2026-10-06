@@ -1,0 +1,5 @@
+node_modules/
+lt.log
+lt.err
+.env
+npm-debug.log*

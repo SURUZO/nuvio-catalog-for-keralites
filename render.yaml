@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: suruzo-catalog
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: TMDB_READ_TOKEN
+        sync: false

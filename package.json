@@ -1,0 +1,15 @@
+{
+  "name": "malayali-catalog-addon",
+  "version": "1.0.0",
+  "description": "Perfect catalog for Malayali viewers — Malayalam first, plus Anime, Hindi, English & time-based trending. Nuvio / Stremio compatible.",
+  "main": "addon.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node addon.js"
+  },
+  "dependencies": {
+    "beamup-cli": "^1.3.2",
+    "localtunnel": "^2.0.2",
+    "stremio-addon-sdk": "^1.6.10"
+  }
+}
